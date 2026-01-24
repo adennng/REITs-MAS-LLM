@@ -1,0 +1,249 @@
+===============================================================================
+1. price_predictions.csv - 价格预测结果表
+===============================================================================
+
+字段说明:
+---------------------------------------------------------------------------
+id                          | INT          | 主键,自增ID
+analysis_date               | DATE         | 分析日期
+fund_code                   | VARCHAR(20)  | 基金代码
+direction_prediction        | TEXT         | 方向预测结果(JSON格式)
+direction_prediction_cot    | TEXT         | LLM推理过程(Chain of Thought)
+direction_prediction_input  | TEXT         | 传递给LLM的完整输入内容
+volatility_threshold        | DECIMAL(10,6)| 动态波动阈值
+output_announcement         | TEXT         | 公告专家输出结果(JSON格式)
+output_market               | TEXT         | 市场专家输出结果(JSON格式)
+output_price                | TEXT         | 价格动量专家输出结果(JSON格式)
+output_event                | TEXT         | 事件专家输出结果(JSON格式)
+price_context               | TEXT         | 价格与交易上下文信息(JSON格式)
+
+===============================================================================
+2. price_data.csv - 价格数据表
+===============================================================================
+
+字段说明:
+---------------------------------------------------------------------------
+fund_code    | VARCHAR  | 基金代码
+trade_date   | DATE     | 交易日期
+close        | DECIMAL  | 收盘价(元)
+vol          | DECIMAL  | 成交量(份)
+amount       | DECIMAL  | 成交额(千元)
+
+===============================================================================
+3. dividend.csv - 分红表
+===============================================================================
+
+字段说明:
+---------------------------------------------------------------------------
+fund_code           | VARCHAR | 基金代码
+ex_dividend_date    | DATE    | 除息日
+dividend_per_share  | DECIMAL | 每份分红金额(元)
+
+
+===============================================================================
+4. product_info.csv - 基金信息表
+===============================================================================
+
+字段说明:
+---------------------------------------------------------------------------
+fund_code  | VARCHAR | 基金代码
+fund_name  | VARCHAR | 基金简称
+list_date  | DATE    | 上市日期
+asset_type | VARCHAR | 资产类型/所属板块
+
+===============================================================================
+5. trading_decisions_strong.csv - 交易决策表
+===============================================================================
+
+字段说明:
+---------------------------------------------------------------------------
+analysis_date         | DATE    | 分析日期
+fund_code             | VARCHAR | 基金代码
+position_before       | DECIMAL | 交易前仓位比例(0-1)
+position_after        | DECIMAL | 交易后仓位比例(0-1)
+shares_before         | DECIMAL | 交易前持仓份额
+shares_after          | DECIMAL | 交易后持仓份额
+cash_before           | DECIMAL | 交易前现金(元)
+cash_after            | DECIMAL | 交易后现金(元)
+nav_before            | DECIMAL | 交易前净值(元)
+nav_after             | DECIMAL | 交易后净值(元)
+days_since_start      | INT     | 距离起始日天数
+is_building_phase     | BOOLEAN | 是否处于建仓阶段
+current_price         | DECIMAL | 当前价格(元)
+volatility_threshold  | DECIMAL | 波动率阈值
+price_change_1d       | DECIMAL | 1日价格变化
+ratio_t               | DECIMAL | 比率T
+daily_regime          | VARCHAR | 日度状态
+signal_level_t1       | INT     | T+1信号级别
+signal_level_t5       | INT     | T+5信号级别
+signal_level_t20      | INT     | T+20信号级别
+delta_steps           | INT     | 仓位变动步数
+target_position       | DECIMAL | 目标仓位
+action_type           | VARCHAR | 操作类型(buy/sell/hold)
+rationale_core        | TEXT    | 核心决策理由
+peak_nav              | DECIMAL | 峰值净值(元)
+max_drawdown          | DECIMAL | 最大回撤
+total_return          | DECIMAL | 总回报率
+round_entry_price     | DECIMAL | 本轮入场价格(元)
+round_peak_nav        | DECIMAL | 本轮峰值净值(元)
+round_max_drawdown    | DECIMAL | 本轮最大回撤
+round_return          | DECIMAL | 本轮回报率
+round_holding_days    | INT     | 本轮持仓天数
+trade_shares          | DECIMAL | 本次交易份额
+trade_amount          | DECIMAL | 本次交易金额(元)
+trade_cost            | DECIMAL | 本次交易成本(元)
+dividend_today        | DECIMAL | 当日分红收入(元)
+total_dividend_received| DECIMAL| 累计分红收入(元)
+llm_prompt            | TEXT    | LLM提示词
+llm_reasoning         | TEXT    | LLM推理过程
+llm_response          | TEXT    | LLM完整响应
+model_name            | VARCHAR | 使用的模型名称
+model_type            | VARCHAR | 模型类型
+risk_override_reason  | TEXT    | 风控覆盖原因
+delta_steps_original  | INT     | 原始仓位变动步数
+
+
+
+===============================================================================
+6. baseline_buy_hold.csv - 买入持有基准表
+===============================================================================
+
+字段说明:
+---------------------------------------------------------------------------
+fund_code               | VARCHAR | 基金代码
+analysis_date           | DATE    | 分析日期
+holding_days            | INT     | 持有天数
+current_price           | DECIMAL | 当前价格(元)
+peak_nav                | DECIMAL | 峰值净值(元)
+shares                  | DECIMAL | 持仓份额
+cash                    | DECIMAL | 现金(元)
+market_value            | DECIMAL | 市值(元)
+nav                     | DECIMAL | 净值(元)
+max_drawdown            | DECIMAL | 最大回撤
+total_return            | DECIMAL | 总回报率
+total_dividend_received | DECIMAL | 累计分红收入(元)
+dividend_today          | DECIMAL | 当日分红(元)
+initial_capital         | DECIMAL | 初始资金(元)
+buy_shares              | DECIMAL | 买入份额
+buy_amount              | DECIMAL | 买入金额(元)
+buy_cost                | DECIMAL | 买入成本(元)
+is_first_day            | BOOLEAN | 是否首日
+strategy_type           | VARCHAR | 策略类型
+
+
+===============================================================================
+7. processed_files.csv - 已处理公告文件表
+===============================================================================
+
+字段说明:
+---------------------------------------------------------------------------
+fund_code           | VARCHAR | 基金代码
+date                | DATE    | 公告发布日期
+announcement_title  | VARCHAR | 公告标题
+digest              | TEXT    | 公告摘要
+doc_type_2          | VARCHAR | 公告类型(如季报/年报/中报/分红公告/主要运营数据等)
+sentiment           | INT     | 情绪判断(1=利好, 0=中性, -1=利空, 100=特殊)
+sentiment_reason    | TEXT    | 情绪判断理由
+price_change        | TEXT    | 公告发布后价格变动数据(JSON格式)
+event_date          | DATE    | 事件生效日期(如分红的除息日)
+event_price_change  | TEXT    | 事件生效后价格变动数据(JSON格式)
+
+===============================================================================
+8. index_price_data.csv - 指数价格数据表
+===============================================================================
+
+字段说明:
+---------------------------------------------------------------------------
+trade_date        | DATE    | 交易日期
+中证REITs全收益   | DECIMAL | 中证REITs全收益指数
+10年期国债收益率  | DECIMAL | 10年期国债收益率(%)
+上证指数          | DECIMAL | 上证综合指数
+中证红利          | DECIMAL | 中证红利指数
+
+===============================================================================
+9. industry_indices.csv - 行业指数表
+===============================================================================
+
+字段说明:
+---------------------------------------------------------------------------
+trade_date          | DATE    | 交易日期
+asset_type          | VARCHAR | 板块名称
+index_value         | DECIMAL | 指数值
+total_market_value  | DECIMAL | 总市值(元)
+
+
+===============================================================================
+10. news.csv - 新闻表
+===============================================================================
+
+字段说明:
+---------------------------------------------------------------------------
+date    | DATE    | 新闻日期
+title   | VARCHAR | 新闻标题
+digest  | TEXT    | 新闻摘要
+score   | INT     | 新闻评分(1=一般积极, 2=非常积极)
+
+===============================================================================
+11. price_predictions_trained_model.csv - 微调模型价格预测结果表
+===============================================================================
+用途: 存储使用微调后模型生成的方向预测结果
+
+字段说明:
+---------------------------------------------------------------------------
+analysis_date               | DATE         | 分析日期
+fund_code                   | VARCHAR(20)  | 基金代码
+direction_prediction        | TEXT         | 方向预测结果(JSON格式)
+direction_prediction_cot    | TEXT         | LLM推理过程(Chain of Thought)
+
+
+===============================================================================
+12. trading_decisions_trained_model.csv - 微调模型交易决策表
+===============================================================================
+用途: 存储基于微调模型预测结果形成的交易决策记录
+
+字段说明:
+---------------------------------------------------------------------------
+analysis_date         | DATE    | 分析日期
+fund_code             | VARCHAR | 基金代码
+position_before       | DECIMAL | 交易前仓位比例(0-1)
+shares_before         | DECIMAL | 交易前持仓份额
+cash_before           | DECIMAL | 交易前现金(元)
+nav_before            | DECIMAL | 交易前净值(元)
+days_since_start      | INT     | 距离起始日天数
+is_building_phase     | BOOLEAN | 是否处于建仓阶段
+current_price         | DECIMAL | 当前价格(元)
+price_change_1d       | DECIMAL | 1日价格变化
+volatility_threshold  | DECIMAL | 波动率阈值
+ratio_t               | DECIMAL | 比率T
+daily_regime          | VARCHAR | 日度状态
+signal_level_t1       | INT     | T+1信号级别
+signal_level_t5       | INT     | T+5信号级别
+signal_level_t20      | INT     | T+20信号级别
+delta_steps           | INT     | 仓位变动步数
+target_position       | DECIMAL | 目标仓位
+action_type           | VARCHAR | 操作类型(buy/sell/hold)
+rationale_core        | TEXT    | 核心决策理由
+position_after        | DECIMAL | 交易后仓位比例(0-1)
+shares_after          | DECIMAL | 交易后持仓份额
+cash_after            | DECIMAL | 交易后现金(元)
+nav_after             | DECIMAL | 交易后净值(元)
+peak_nav              | DECIMAL | 峰值净值(元)
+max_drawdown          | DECIMAL | 最大回撤
+total_return          | DECIMAL | 总回报率
+trade_shares          | DECIMAL | 本次交易份额
+trade_amount          | DECIMAL | 本次交易金额(元)
+trade_cost            | DECIMAL | 本次交易成本(元)
+dividend_today        | DECIMAL | 当日分红收入(元)
+total_dividend_received| DECIMAL| 累计分红收入(元)
+llm_prompt            | TEXT    | LLM提示词
+llm_reasoning         | TEXT    | LLM推理过程
+llm_response          | TEXT    | LLM完整响应
+risk_override_reason  | TEXT    | 风控覆盖原因
+delta_steps_original  | INT     | 原始仓位变动步数
+round_entry_price     | DECIMAL | 本轮入场价格(元)
+round_peak_nav        | DECIMAL | 本轮峰值净值(元)
+round_max_drawdown    | DECIMAL | 本轮最大回撤
+round_return          | DECIMAL | 本轮回报率
+round_holding_days    | INT     | 本轮持仓天数
+
+===============================================================================

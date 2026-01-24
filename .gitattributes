@@ -1,0 +1,4 @@
+data/price_predictions.csv filter=lfs diff=lfs merge=lfs -text
+data/price_predictions_trained_model.csv filter=lfs diff=lfs merge=lfs -text
+data/trading_decisions_strong.csv filter=lfs diff=lfs merge=lfs -text
+data/trading_decisions_trained_model.csv filter=lfs diff=lfs merge=lfs -text
