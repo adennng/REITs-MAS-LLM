@@ -10,7 +10,7 @@
 
 ## 📄 论文
 
-论文地址: *待补充*
+论文地址: [Design and Empirical Study of a Large Language Model-Based Multi-Agent Investment System for Chinese Public REITs](https://arxiv.org/pdf/2602.00082)
 
 
 ---
